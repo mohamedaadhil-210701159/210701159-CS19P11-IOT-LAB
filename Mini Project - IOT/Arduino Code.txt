@@ -1,0 +1,34 @@
+const int mq136Pin = A0;    // Analog pin for MQ136 sensor
+const int redLedPin = 8;    // Digital pin for red LED
+const int greenLedPin = 9;  // Digital pin for green LED
+const int buzzerPin = 7;    // Digital pin for buzzer
+
+const int threshold = 700;  // Threshold value for H2S detection
+
+void setup() {
+  pinMode(redLedPin, OUTPUT);
+  pinMode(greenLedPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+  Serial.begin(9600);      // Initialize serial communication
+}
+
+void loop() {
+  int sensorValue = analogRead(mq136Pin);  // Read the sensor value
+
+  Serial.print("Sensor Value: ");
+  Serial.println(sensorValue);  // Print the sensor value for debugging
+
+  if (sensorValue > threshold) {
+    // H2S gas detected
+    digitalWrite(redLedPin, HIGH);    // Turn on red LED
+    digitalWrite(greenLedPin, LOW);   // Turn off green LED
+    digitalWrite(buzzerPin, HIGH);    // Turn on buzzer
+  } else {
+    // No H2S gas detected
+    digitalWrite(redLedPin, LOW);     // Turn off red LED
+    digitalWrite(greenLedPin, HIGH);  // Turn on green LED
+    digitalWrite(buzzerPin, LOW);     // Turn off buzzer
+  }
+
+  delay(1000);  // Wait for 1 second before reading again
+}
